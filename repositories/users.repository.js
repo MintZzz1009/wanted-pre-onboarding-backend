@@ -6,15 +6,22 @@ class UserRepository {
     this.userModel = UserModel;
   }
 
-  findAllPosts = async () => {};
+  findUser = async () => {};
 
-  findPostById = async () => {};
+  createNewUser = async (email, password) => {
+    try {
+      await this.userModel.create({
+        email,
+        password,
+      });
 
-  createNewPost = async () => {};
+      return { status: 201, message: '회원가입이 완료되었습니다.' };
+    } catch (error) {
+      throw error;
+    }
+  };
 
-  updatePost = async () => {};
-
-  deletePost = async () => {};
+  deleteUser = async () => {};
 }
 
 module.exports = UserRepository;

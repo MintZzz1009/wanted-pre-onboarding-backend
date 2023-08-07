@@ -2,10 +2,10 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { User } = require('../models');
 
-class ProjectRepository {
-  constructor(ProjectModel, ProjectLikeModel) {
-    this.projectModel = ProjectModel;
-    this.projectLikeModel = ProjectLikeModel;
+class PostRepository {
+  constructor(UserModel, PostModel) {
+    this.userModel = UserModel;
+    this.postModel = PostModel;
   }
 
   findAllPosts = async () => {};
@@ -19,4 +19,4 @@ class ProjectRepository {
   deletePost = async () => {};
 }
 
-module.exports = ProjectRepository;
+module.exports = PostRepository;
