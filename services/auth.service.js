@@ -12,9 +12,15 @@ class AuthService {
     }
   };
 
-  signIn = async (req, res) => {};
+  signIn = async (email, password) => {
+    try {
+      return await this.userRepository.findUser(email, password);
+    } catch (error) {
+      throw error;
+    }
+  };
 
-  signOut = async (req, res) => {};
+  signOut = async (email, password) => {};
 }
 
 module.exports = AuthService;

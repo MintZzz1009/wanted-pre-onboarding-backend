@@ -6,16 +6,24 @@ class AuthController {
   // 회원가입
   signUp = async (req, res) => {
     try {
-      console.log(req.body);
       const { email, password } = req.body;
-      return await this.authService.signUp(email, password);
+      const signUp = await this.authService.signUp(email, password);
+      return res.status(201).json(signUp);
     } catch (error) {
       throw error;
     }
   };
 
   // 로그인
-  signIn = async (req, res) => {};
+  signIn = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const signIn = await this.authService.signIn(email, password);
+      return res.status(200).json(signIn);
+    } catch (error) {
+      throw error;
+    }
+  };
 
   // 로그아웃
   signOut = async (req, res) => {};
