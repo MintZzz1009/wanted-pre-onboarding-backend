@@ -8,11 +8,11 @@ class UserRepository {
 
   findUser = async (email, password) => {
     try {
-      await this.userModel.findOne({
+      return await this.userModel.findOne({
         where: { email, password },
       });
 
-      return { status: 200, message: '로그인 되었습니다.' };
+      // return { status: 200, message: '로그인 되었습니다.' };
     } catch (error) {
       throw error;
     }

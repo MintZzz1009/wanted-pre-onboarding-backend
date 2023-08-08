@@ -26,7 +26,9 @@ class AuthController {
   };
 
   // 로그아웃
-  signOut = async (req, res) => {};
+  signOut = async (req, res) => {
+    // TODO: 토큰 적용 후 구현
+  };
 }
 
 module.exports = AuthController;
