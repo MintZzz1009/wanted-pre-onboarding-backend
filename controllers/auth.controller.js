@@ -18,8 +18,13 @@ class AuthController {
   signIn = async (req, res) => {
     try {
       const { email, password } = req.body;
-      const signIn = await this.authService.signIn(email, password);
-      return res.status(200).json(signIn);
+      const { accessToken, refreshToken } = await this.authService.signIn(
+        email,
+        password
+      );
+      res.cookie('accessToken', accessToken);
+      res.cookie('refreshToken', refreshToken);
+      return res.status(200).json({ message: '로그인이 완료되었습니다.' });
     } catch (error) {
       throw error;
     }
@@ -27,7 +32,9 @@ class AuthController {
 
   // 로그아웃
   signOut = async (req, res) => {
-    // TODO: 토큰 적용 후 구현
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    return res.status(200).json({ message: '로그아웃이 완료되었습니다.' });
   };
 }
 

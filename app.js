@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
 
@@ -9,6 +10,7 @@ const postsRouter = require('./routes/posts.routes');
 const app = express();
 
 app.use(morgan('dev'));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -18,5 +20,5 @@ app.use('/auth', authRouter);
 app.use('/posts', postsRouter);
 
 app.listen(port, () => {
-  console.log(`✅ 서버가 ${port}번 포트에서 활성화되었습니다.`);
+  console.log(`✅ 서버가 http://localhost:${port}/ 에서 활성화되었습니다.`);
 });

@@ -10,7 +10,11 @@ class PostsController {
   getPost = async (req, res) => {};
 
   // 게시글 생성
-  postNewPost = async (req, res) => {};
+  postNewPost = async (req, res) => {
+    console.log(`req.body: ${req.body}`);
+    console.log(`res.locals.user: ${res.locals.user}`);
+    return res.json({ message: 'postNewPost 입니당' });
+  };
 
   // 게시글 수정
   putPost = async (req, res) => {};

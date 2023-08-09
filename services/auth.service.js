@@ -1,8 +1,10 @@
 const UserRepository = require('../repositories/users.repository');
+const TokenMiddleware = require('../middleware/token.js');
 const { User } = require('../models');
 
 class AuthService {
   userRepository = new UserRepository(User);
+  tokenMiddleware = new TokenMiddleware();
 
   signUp = async (email, password) => {
     try {
@@ -14,13 +16,12 @@ class AuthService {
 
   signIn = async (email, password) => {
     try {
-      return await this.userRepository.findUser(email, password);
+      const userInfo = await this.userRepository.findUser(email, password);
+      return this.tokenMiddleware.generateToken(userInfo.id);
     } catch (error) {
       throw error;
     }
   };
-
-  signOut = async (email, password) => {};
 }
 
 module.exports = AuthService;
