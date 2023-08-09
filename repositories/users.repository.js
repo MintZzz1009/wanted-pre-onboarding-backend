@@ -31,7 +31,35 @@ class UserRepository {
     }
   };
 
-  deleteUser = async () => {};
+  saveRefreshToken = async (id, refreshToken) => {
+    try {
+      await this.userModel.update(
+        {
+          refreshToken,
+        },
+        { where: { id } }
+      );
+      return { status: 201, message: 'refreshToken이 발급되었습니다.' };
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  clearRefreshToken = async (id) => {
+    try {
+      await this.userModel.update(
+        {
+          refreshToken: '',
+        },
+        {
+          where: { id },
+        }
+      );
+      return { status: 200, message: 'refreshToken이 삭제되었습니다.' };
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 module.exports = UserRepository;

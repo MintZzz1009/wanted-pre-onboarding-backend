@@ -16,8 +16,19 @@ class AuthService {
 
   signIn = async (email, password) => {
     try {
-      const userInfo = await this.userRepository.findUser(email, password);
-      return this.tokenMiddleware.generateToken(userInfo.id);
+      const { id } = await this.userRepository.findUser(email, password);
+      const { accessToken, refreshToken } =
+        this.tokenMiddleware.generateToken(id);
+      await this.userRepository.saveRefreshToken(id, refreshToken);
+      return accessToken;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  clearRefreshToken = async (id) => {
+    try {
+      await this.userRepository.clearRefreshToken(id);
     } catch (error) {
       throw error;
     }
