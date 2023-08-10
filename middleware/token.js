@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 
 // 토큰 검증 함수
-class TokenMiddleware {
+class Token {
   verifyToken = (token) => {
     try {
       return jwt.verify(token, process.env.TOKEN_SECRET);
@@ -33,14 +33,15 @@ class TokenMiddleware {
   checkToken = async (req, res, next) => {
     try {
       const cookie = req.cookies;
+      let { accessToken } = cookie;
+
       // cookie에 accessToken이 없을 때
-      if (!cookie.accessToken) {
+      if (!accessToken) {
         return res
           .status(404)
           .json({ message: 'There is no Token. Please signin your account' });
       }
 
-      let { accessToken } = cookie;
       const checkAccess = this.verifyToken(accessToken);
       const { id } = jwt.decode(accessToken);
       const user = await User.findByPk(id);
@@ -49,13 +50,9 @@ class TokenMiddleware {
       if (checkAccess == 'expired') {
         if (checkRefresh === 'expired') {
           // case1: access token과 refresh token 모두만료
-          //   const error = new TokenExpired();
-          throw new Error();
-          return res
-            .status(400)
-            .json({
-              message: 'All tokens are expired. Please re-signin your account',
-            });
+          return res.status(400).json({
+            message: 'All tokens are expired. Please re-signin your account',
+          });
         } else {
           // case2: access token만 만료
           console.log('accessToken 재발급');
@@ -71,7 +68,6 @@ class TokenMiddleware {
           return res.status(400).json({
             message: 'refreshToken 만료, 다시 로그인해주세요.',
           });
-          // TODO: DB에서 업데이트하도록 수정
         }
       }
 
@@ -92,6 +88,28 @@ class TokenMiddleware {
       });
     }
   };
+
+  whoIsUser = async (req, res, next) => {
+    try {
+      const cookie = req.cookies;
+      let { accessToken } = cookie;
+
+      if (!accessToken) {
+        throw new Error();
+      }
+
+      const { id } = jwt.decode(accessToken);
+
+      res.locals.user = id;
+      next();
+    } catch (error) {
+      console.error(error);
+      res.clearCookie('accessToken');
+      return res.status(400).json({
+        message: '로그아웃되었습니다',
+      });
+    }
+  };
 }
 
-module.exports = TokenMiddleware;
+module.exports = Token;

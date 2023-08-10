@@ -9,10 +9,19 @@ class UserRepository {
   findUser = async (email, password) => {
     try {
       return await this.userModel.findOne({
-        where: { email, password },
+        where: { email },
       });
+    } catch (error) {
+      throw error;
+    }
+  };
 
-      // return { status: 200, message: '로그인 되었습니다.' };
+  findUserByEmail = async (email, password) => {
+    console.log('findUserByEmail 입니다');
+    try {
+      return await this.userModel.findOne({
+        where: { email },
+      });
     } catch (error) {
       throw error;
     }
@@ -24,8 +33,6 @@ class UserRepository {
         email,
         password,
       });
-
-      return { status: 201, message: '회원가입이 완료되었습니다.' };
     } catch (error) {
       throw error;
     }
@@ -39,7 +46,6 @@ class UserRepository {
         },
         { where: { id } }
       );
-      return { status: 201, message: 'refreshToken이 발급되었습니다.' };
     } catch (error) {
       throw error;
     }
@@ -55,7 +61,6 @@ class UserRepository {
           where: { id },
         }
       );
-      return { status: 200, message: 'refreshToken이 삭제되었습니다.' };
     } catch (error) {
       throw error;
     }

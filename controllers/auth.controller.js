@@ -6,9 +6,9 @@ class AuthController {
   // 회원가입
   signUp = async (req, res) => {
     try {
-      const { email, password } = req.body;
-      const signUp = await this.authService.signUp(email, password);
-      return res.status(201).json(signUp);
+      const { email, hashedPassword } = res.locals.user;
+      await this.authService.signUp(email, hashedPassword);
+      return res.status(201).json({ message: '회원가입이 완료되었습니다.' });
     } catch (error) {
       throw error;
     }
@@ -17,8 +17,10 @@ class AuthController {
   // 로그인
   signIn = async (req, res) => {
     try {
-      const { email, password } = req.body;
-      const accessToken = await this.authService.signIn(email, password);
+      // const { email, password } = req.body;
+      console.log('auth.controller의 signIn 입니다');
+      const { email } = res.locals.user;
+      const accessToken = await this.authService.signIn(email);
       res.cookie('accessToken', accessToken);
       return res.status(200).json({ message: '로그인이 완료되었습니다.' });
     } catch (error) {
@@ -28,9 +30,14 @@ class AuthController {
 
   // 로그아웃
   signOut = async (req, res) => {
-    res.clearCookie('accessToken');
-    await this.authService.clearRefreshToken(id);
-    return res.status(200).json({ message: '로그아웃이 완료되었습니다.' });
+    try {
+      const id = res.locals.user;
+      res.clearCookie('accessToken');
+      await this.authService.clearRefreshToken(id);
+      return res.status(200).json({ message: '로그아웃이 완료되었습니다.' });
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
