@@ -17,8 +17,6 @@ class AuthController {
   // 로그인
   signIn = async (req, res) => {
     try {
-      // const { email, password } = req.body;
-      console.log('auth.controller의 signIn 입니다');
       const { email } = res.locals.user;
       const accessToken = await this.authService.signIn(email);
       res.cookie('accessToken', accessToken);

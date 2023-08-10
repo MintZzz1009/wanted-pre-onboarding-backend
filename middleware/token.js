@@ -3,13 +3,16 @@ const { User } = require('../models');
 
 // 토큰 검증 함수
 class Token {
+  ACCESS_TOKEN_EXPIRED = '1h';
+  REFRESH_TOKEN_EXPIRED = '14d';
+
   verifyToken = (token) => {
     try {
       return jwt.verify(token, process.env.TOKEN_SECRET);
     } catch (error) {
-      // 토큰이 만료가 된 경우에만 null값
+      // 토큰이 만료가 된 경우
       if (error.message === 'jwt expired') {
-        return 'expired';
+        return false;
       }
     }
   };
@@ -18,12 +21,12 @@ class Token {
   generateToken = (id) => {
     // access token
     const accessToken = jwt.sign({ id }, process.env.TOKEN_SECRET, {
-      expiresIn: '1h',
+      expiresIn: this.ACCESS_TOKEN_EXPIRED,
     });
 
     // refresh token
     const refreshToken = jwt.sign({ id }, process.env.TOKEN_SECRET, {
-      expiresIn: '14d',
+      expiresIn: this.REFRESH_TOKEN_EXPIRED,
     });
 
     return { accessToken, refreshToken };
@@ -37,9 +40,9 @@ class Token {
 
       // cookie에 accessToken이 없을 때
       if (!accessToken) {
-        return res
-          .status(404)
-          .json({ message: 'There is no Token. Please signin your account' });
+        return res.status(404).json({
+          message: '토큰이 존재하지 않습니다. 다시 로그인해주세요.',
+        });
       }
 
       const checkAccess = this.verifyToken(accessToken);
@@ -47,35 +50,37 @@ class Token {
       const user = await User.findByPk(id);
       const checkRefresh = this.verifyToken(user.refreshToken);
 
-      if (checkAccess == 'expired') {
-        if (checkRefresh === 'expired') {
-          // case1: access token과 refresh token 모두만료
-          return res.status(400).json({
-            message: 'All tokens are expired. Please re-signin your account',
-          });
-        } else {
-          // case2: access token만 만료
-          console.log('accessToken 재발급');
-          accessToken = jwt.sign({ id }, process.env.TOKEN_SECRET, {
-            expiresIn: '1m',
-          });
-          res.cookie('accessToken', accessToken);
-        }
-      } else {
-        if (checkRefresh === 'expired') {
-          // case3: refresh token만 만료
-          console.log('refreshToken 만료 재로그인 필요');
-          return res.status(400).json({
-            message: 'refreshToken 만료, 다시 로그인해주세요.',
-          });
-        }
+      // case1: access token과 refresh token 모두만료
+      if (!checkAccess && !checkRefresh) {
+        return res.status(400).json({
+          message: '토큰이 만료되었습니다. 다시 로그인해주세요.',
+        });
       }
 
-      // user를 찾을 수 없을 경우
-      if (!user) {
-        const error = new UserNotFound();
-        throw error;
+      // case2: access token만 만료
+      if (!checkAccess && checkRefresh) {
+        console.log('accessToken 재발급');
+        accessToken = jwt.sign({ id }, process.env.TOKEN_SECRET, {
+          expiresIn: this.ACCESS_TOKEN_EXPIRED,
+        });
+        res.cookie('accessToken', accessToken);
       }
+
+      // case3: refresh token만 만료
+      if (checkAccess && !checkRefresh) {
+        console.log('refreshToken 만료, 재로그인 필요');
+        return res.status(400).json({
+          message: 'refreshToken 만료, 다시 로그인해주세요.',
+        });
+      }
+
+      // accessToken에 해당하는 user를 찾을 수 없을 경우
+      if (!user) {
+        return res.status(404).json({
+          message: '잘못된 토큰입니다. 다시 로그인해주세요.',
+        });
+      }
+
       // 다음 미들웨어로 user 정보 전달
       res.locals.user = user;
       next();
@@ -94,13 +99,7 @@ class Token {
     try {
       const cookie = req.cookies;
       let { accessToken } = cookie;
-
-      if (!accessToken) {
-        throw new Error();
-      }
-
       const { id } = jwt.decode(accessToken);
-
       res.locals.user = id;
       next();
     } catch (error) {

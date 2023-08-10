@@ -8,7 +8,14 @@ class PostRepository {
   findAllPosts = async () => {
     try {
       return await this.postModel.findAll();
-      // TODO: 페이지네이션 구현
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  findAllPostsWithPage = async (offset, limit) => {
+    try {
+      return await this.postModel.findAndCountAll({ offset, limit });
     } catch (error) {
       throw error;
     }

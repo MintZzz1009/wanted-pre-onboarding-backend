@@ -6,7 +6,11 @@ class PostsController {
   // 전체 게시글 조회
   getAllPosts = async (req, res) => {
     try {
-      const allPosts = await this.postService.getAllPosts();
+      const { pageNo, pageSize } = req.query;
+      const allPosts = await this.postService.getAllPostsWithPage(
+        pageNo,
+        pageSize
+      );
       return res.status(200).json(allPosts);
     } catch (error) {
       throw error;
