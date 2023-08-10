@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { User } = require('../models');
+// const { User } = require('../models');
 
 class UserRepository {
   constructor(UserModel) {
@@ -16,20 +16,9 @@ class UserRepository {
     }
   };
 
-  findUserByEmail = async (email, password) => {
-    console.log('findUserByEmail 입니다');
-    try {
-      return await this.userModel.findOne({
-        where: { email },
-      });
-    } catch (error) {
-      throw error;
-    }
-  };
-
   createNewUser = async (email, password) => {
     try {
-      await this.userModel.create({
+      return await this.userModel.create({
         email,
         password,
       });
@@ -40,7 +29,7 @@ class UserRepository {
 
   saveRefreshToken = async (id, refreshToken) => {
     try {
-      await this.userModel.update(
+      return await this.userModel.update(
         {
           refreshToken,
         },
@@ -53,7 +42,7 @@ class UserRepository {
 
   clearRefreshToken = async (id) => {
     try {
-      await this.userModel.update(
+      return await this.userModel.update(
         {
           refreshToken: '',
         },

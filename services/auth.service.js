@@ -27,7 +27,7 @@ class AuthService {
 
   clearRefreshToken = async (id) => {
     try {
-      await this.userRepository.clearRefreshToken(id);
+      return await this.userRepository.clearRefreshToken(id);
     } catch (error) {
       throw error;
     }

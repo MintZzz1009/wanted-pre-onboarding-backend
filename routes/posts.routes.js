@@ -1,15 +1,33 @@
 const express = require('express');
 const PostController = require('../controllers/posts.controller');
 const Token = require('../middleware/token');
+const Validator = require('../middleware/validator');
 
 const router = express.Router();
 const postController = new PostController();
 const token = new Token();
+const validator = new Validator();
 
 router.get('/', postController.getAllPosts);
-router.post('/', token.checkToken, postController.postNewPost); // 추후 jwt 미들웨어 추가
+router.post(
+  '/',
+  token.checkToken,
+  validator.hasTitleAndContent,
+  postController.postNewPost
+);
 router.get('/:id', postController.getPost);
-router.put('/:id', token.checkToken, postController.putPost); // 추후 jwt 미들웨어 추가
-router.delete('/:id', token.checkToken, postController.deletePost); // 추후 jwt 미들웨어 추가
+router.put(
+  '/:id',
+  token.checkToken,
+  validator.isWriter,
+  validator.hasTitleAndContent,
+  postController.putPost
+);
+router.delete(
+  '/:id',
+  token.checkToken,
+  validator.isWriter,
+  postController.deletePost
+);
 
 module.exports = router;

@@ -1,8 +1,10 @@
 const bcrypt = require('bcrypt');
 const UserRepository = require('../repositories/users.repository');
-const { User } = require('../models');
+const PostRepository = require('../repositories/posts.repository');
+const { User, Post } = require('../models');
 class Validator {
   userRepository = new UserRepository(User);
+  postRepository = new PostRepository(Post);
 
   isValid = async (req, res, next) => {
     const { email, password } = req.body;
@@ -37,13 +39,10 @@ class Validator {
   };
 
   compareUserInfo = async (req, res, next) => {
-    // email 존재하는지 확인
     try {
-      console.log('compareUserInfo 입니다');
       const { email, password } = req.body;
       const user = await this.userRepository.findUser(email);
       const validPassword = await bcrypt.compare(password, user.password);
-      console.log(`validPassword: ${validPassword}`);
 
       if (!validPassword) {
         return res.status(400).send('이메일이나 비밀번호가 올바르지 않습니다.');
@@ -52,16 +51,53 @@ class Validator {
       return res.status(400).send('이메일이나 비밀번호가 올바르지 않습니다.');
     }
     next();
-    // 암호화된 db에 저장된 비밀번호와 비교
+  };
+
+  hasTitleAndContent = async (req, res, next) => {
+    // post의 title과 content가 null값이 나오지 않도록 검증
+    try {
+      const { title, content } = req.body;
+      if (!title) {
+        return res.status(400).json({ message: '제목을 입력해주세요.' });
+      }
+      if (!content) {
+        return res.status(400).json({ message: '내용을 입력해주세요.' });
+      }
+      next();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  isWriter = async (req, res, next) => {
+    try {
+      const { id: updater } = res.locals.user;
+      const { id: postId } = req.params;
+      const postInfo = await this.postRepository.findPost(postId);
+      if (!postInfo) {
+        return res.status(404).json({
+          message: '존재하지 않는 게시글입니다.',
+        });
+      }
+      if (postInfo.writer !== updater) {
+        return res.status(400).json({
+          message: '게시글은 작성자만 수정하거나 삭제할 수 있습니다.',
+        });
+      }
+      next();
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
 module.exports = Validator;
 
 // TODO: 비밀번호 암호화
-//       validator 미들웨어 만들기
 //       post 기능 3계층 코드 작성
 //       error 처리 custom 만들기
+//       post validator(title, content)
+//       pagination
 //
 //       가산점 선택
 //       jest로 테스트코드

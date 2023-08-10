@@ -18,12 +18,12 @@ class Token {
   generateToken = (id) => {
     // access token
     const accessToken = jwt.sign({ id }, process.env.TOKEN_SECRET, {
-      expiresIn: '1m',
+      expiresIn: '1h',
     });
 
     // refresh token
     const refreshToken = jwt.sign({ id }, process.env.TOKEN_SECRET, {
-      expiresIn: '3m',
+      expiresIn: '14d',
     });
 
     return { accessToken, refreshToken };
@@ -89,6 +89,7 @@ class Token {
     }
   };
 
+  // 로그아웃을 위한 단순 user정보 파악
   whoIsUser = async (req, res, next) => {
     try {
       const cookie = req.cookies;
