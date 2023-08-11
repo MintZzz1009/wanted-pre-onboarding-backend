@@ -86,8 +86,8 @@
 
 # 3. 데이터베이스 테이블 구조
 
-![drawSQL_DB_image](https://drive.google.com/file/d/1wwHs_fiI9cIuk2Dc0XrbPl-5NSjCiuHp/view?usp=drive_link)
-[링크](https://www.erdcloud.com/p/4ouaNgGNEtBu4Zd7y)
+[이미지](https://drive.google.com/file/d/1wwHs_fiI9cIuk2Dc0XrbPl-5NSjCiuHp/view?usp=drive_link)
+[web 링크](https://www.erdcloud.com/p/4ouaNgGNEtBu4Zd7y)
 <br></br>
 
 # 4. 구현한 API의 동작을 촬영한 데모 영상 링크
