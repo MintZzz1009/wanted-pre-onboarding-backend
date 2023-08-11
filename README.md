@@ -132,4 +132,4 @@
 
 # 6. API 명세(request/response 포함)
 
-https://jet-tv-83b.notion.site/40e36cbba09446108a8977b202d2d559?v=961ce0412cd149089d2022f4a7e9c514&pvs=4
+[링크](https://jet-tv-83b.notion.site/40e36cbba09446108a8977b202d2d559?v=961ce0412cd149089d2022f4a7e9c514&pvs=4)
