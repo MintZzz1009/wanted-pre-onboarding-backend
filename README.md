@@ -17,7 +17,72 @@
 # 2. 애플리케이션의 실행 방법 (엔드포인트 호출 방법 포함)
 
 본 지원자는 배포를 하지 않았기에 로컬에서의 실행방법을 설명드립니다.
-<br></br>
+
+- **2-1. github 저장소를 로컬에 클론합니다.**
+
+프로젝트 소스코드를 다운로드할 경로로 이동합니다.
+다음 명령어를 통해 github 원격 저장소를 로컬에 클론합니다.
+
+```bash
+git clone https://github.com/MintZzz1009/wanted-pre-onboarding-backend.git
+```
+
+- **2-2. 로컬에 클론한 저장소로 이동한 후 .env 파일을 생성합니다.**
+
+```bash
+cd wanted-pre-onboarding-backend/
+echo > .env
+```
+
+- **2-2. .env 파일에 필요한 환경 변수들을 입력합니다.**
+
+```.env
+PORT = 80
+
+# MySQL
+DB_USERNAME='root'
+DB_PASSWORD=''
+DB_DATABASE='test'
+DB_HOST='127.0.0.1'
+
+# JWT
+TOKEN_SECRET='jwt_secert_key'
+ACCESS_TOKEN_EXPIRED = '1d'
+REFRESH_TOKEN_EXPIRED = '14d'
+
+# 페이지네이션
+PAGE_SIZE = '10'
+```
+
+접속할 로컬의 MySQL 서버의 아이디와 비밀번호, 생성할 데이터베이스의 이름을 입력합니다.
+
+- **2-3. 다음 명령어를 입력하여 package.json에 입력된 모듈들을 다운로드 합니다.**
+
+```bash
+npm i
+```
+
+- **2-4. 다음 명령어를 입력하여 MySQL 데이터베이스 생성과 테이블 생성을 합니다.**
+
+```bash
+npx sequelize db:create
+npx sequelize db:migrate
+```
+
+- **2-5. 다음 명령어를 입력하여 서버를 실행합니다.**
+
+```bash
+npm run dev
+```
+
+- **2-6. 엔드포인트 호출을 위해 VScode의 익스텐션인 `Thunder Client`를 설치합니다.**
+
+- Thunder CLient 설치 후, 좌측 탭에 생성된 Thunder Client 버튼을 눌러 실행합니다.
+
+- Thunder Client가 실행되면 탭의 최상단에 New Request 버튼을 클릭하여 새로운 API 실행할 수 있습니다.
+
+- Thunder Client를 통한 엔드포인트의 호출 방법은 [API 명세서](https://jet-tv-83b.notion.site/40e36cbba09446108a8977b202d2d559?v=961ce0412cd149089d2022f4a7e9c514&pvs=4)와 [데모 영상](https://youtu.be/iejcjAJzyTQ)을 참고바랍니다.
+  <br></br>
 
 # 3. 데이터베이스 테이블 구조
 
