@@ -40,9 +40,9 @@
   PORT = 80
 
   # MySQL
-  DB_USERNAME='root'
-  DB_PASSWORD=''
-  DB_DATABASE='test'
+  DB_USERNAME='your_username'
+  DB_PASSWORD='your_password'
+  DB_DATABASE='your_database'
   DB_HOST='127.0.0.1'
 
   # JWT
@@ -55,6 +55,8 @@
   ```
 
   접속할 로컬의 MySQL 서버의 아이디와 비밀번호, 생성할 데이터베이스의 이름을 입력합니다.
+
+  토큰의 유효기간과 페이지네이션 게시글의 수를 변경할 수 있습니다.
 
 - **2-3. 다음 명령어를 입력하여 package.json에 입력된 모듈들을 다운로드 합니다.**
 
@@ -86,14 +88,15 @@
 
 # 3. 데이터베이스 테이블 구조
 
-[이미지](https://drive.google.com/file/d/1wwHs_fiI9cIuk2Dc0XrbPl-5NSjCiuHp/view?usp=drive_link)
-[web 링크](https://www.erdcloud.com/p/4ouaNgGNEtBu4Zd7y)
-<br></br>
+- [이미지](https://drive.google.com/file/d/1wwHs_fiI9cIuk2Dc0XrbPl-5NSjCiuHp/view?usp=drive_link)
+
+- [web 링크](https://www.erdcloud.com/p/4ouaNgGNEtBu4Zd7y)
+  <br></br>
 
 # 4. 구현한 API의 동작을 촬영한 데모 영상 링크
 
-[링크](https://youtu.be/iejcjAJzyTQ)
-<br></br>
+- [링크](https://youtu.be/iejcjAJzyTQ)
+  <br></br>
 
 # 5. 구현 방법 및 이유에 대한 간략한 설명
 
