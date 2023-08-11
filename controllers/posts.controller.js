@@ -6,11 +6,8 @@ class PostsController {
   // 전체 게시글 조회
   getAllPosts = async (req, res) => {
     try {
-      const { pageNo, pageSize } = req.query;
-      const allPosts = await this.postService.getAllPostsWithPage(
-        pageNo,
-        pageSize
-      );
+      const { pageNo } = req.query;
+      const allPosts = await this.postService.getAllPostsWithPage(pageNo);
       return res.status(200).json(allPosts);
     } catch (error) {
       throw error;
@@ -22,6 +19,9 @@ class PostsController {
     try {
       const { id } = req.params;
       const post = await this.postService.getPost(id);
+      if (!post) {
+        return res.status(404).json({ message: '존재하지 않는 게시글입니다.' });
+      }
       return res.status(200).json(post);
     } catch (error) {
       throw error;
@@ -46,7 +46,7 @@ class PostsController {
       const { title, content } = req.body;
       const { id } = req.params;
       await this.postService.putPost(id, title, content);
-      return res.json({ message: '게시글 수정이 완료되었습니다.' });
+      return res.status(201).json({ message: '게시글 수정이 완료되었습니다.' });
     } catch (error) {
       throw error;
     }
@@ -57,7 +57,7 @@ class PostsController {
     try {
       const { id } = req.params;
       await this.postService.deletePost(id);
-      return res.json({ message: '게시글 삭제가 완료되었습니다.' });
+      return res.status(204).json();
     } catch (error) {
       throw error;
     }

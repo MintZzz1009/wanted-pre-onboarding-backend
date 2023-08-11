@@ -3,9 +3,6 @@ const { User } = require('../models');
 
 // 토큰 검증 함수
 class Token {
-  ACCESS_TOKEN_EXPIRED = '1h';
-  REFRESH_TOKEN_EXPIRED = '14d';
-
   verifyToken = (token) => {
     try {
       return jwt.verify(token, process.env.TOKEN_SECRET);
@@ -21,12 +18,12 @@ class Token {
   generateToken = (id) => {
     // access token
     const accessToken = jwt.sign({ id }, process.env.TOKEN_SECRET, {
-      expiresIn: this.ACCESS_TOKEN_EXPIRED,
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRED,
     });
 
     // refresh token
     const refreshToken = jwt.sign({ id }, process.env.TOKEN_SECRET, {
-      expiresIn: this.REFRESH_TOKEN_EXPIRED,
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRED,
     });
 
     return { accessToken, refreshToken };
@@ -40,7 +37,7 @@ class Token {
 
       // cookie에 accessToken이 없을 때
       if (!accessToken) {
-        return res.status(404).json({
+        return res.status(401).json({
           message: '토큰이 존재하지 않습니다. 다시 로그인해주세요.',
         });
       }
@@ -52,7 +49,7 @@ class Token {
 
       // case1: access token과 refresh token 모두만료
       if (!checkAccess && !checkRefresh) {
-        return res.status(400).json({
+        return res.status(401).json({
           message: '토큰이 만료되었습니다. 다시 로그인해주세요.',
         });
       }
@@ -61,14 +58,16 @@ class Token {
       if (!checkAccess && checkRefresh) {
         console.log('accessToken 재발급');
         accessToken = jwt.sign({ id }, process.env.TOKEN_SECRET, {
-          expiresIn: this.ACCESS_TOKEN_EXPIRED,
+          expiresIn: process.env.ACCESS_TOKEN_EXPIRED,
         });
         res.cookie('accessToken', accessToken);
       }
 
       // case3: refresh token만 만료
       if (checkAccess && !checkRefresh) {
-        return res.status(400).json({
+        console.log('refreshToken 만료');
+        res.clearCookie('accessToken');
+        return res.status(401).json({
           message: 'refreshToken 만료, 다시 로그인해주세요.',
         });
       }
@@ -86,7 +85,7 @@ class Token {
     } catch (error) {
       console.error(error);
       res.clearCookie('accessToken');
-      return res.status(400).json({
+      return res.status(401).json({
         message:
           '토큰에 문제가 생겼습니다. 로그인을 통해 토큰을 재발급 받아주세요.',
       });
@@ -104,8 +103,8 @@ class Token {
     } catch (error) {
       console.error(error);
       res.clearCookie('accessToken');
-      return res.status(400).json({
-        message: '로그아웃되었습니다',
+      return res.status(401).json({
+        message: '토큰에 문제가 생겨 로그아웃되었습니다',
       });
     }
   };

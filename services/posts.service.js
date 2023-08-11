@@ -9,14 +9,14 @@ class PostService {
       if (pageNo === 'all') {
         return await this.postRepository.findAllPosts();
       }
-      const PAGE_SIZE = 10;
+      const pageSize = parseInt(process.env.PAGE_SIZE);
       const countAllPosts = await this.postRepository.countAllPosts();
-      const lastPageNo = Math.ceil(countAllPosts / PAGE_SIZE);
+      const lastPageNo = Math.ceil(countAllPosts / pageSize);
       if (pageNo > lastPageNo) {
         pageNo = lastPageNo;
       }
-      const offset = (parseInt(pageNo) - 1) * PAGE_SIZE;
-      return await this.postRepository.findAllPostsWithPage(offset, PAGE_SIZE);
+      const offset = (parseInt(pageNo) - 1) * pageSize;
+      return await this.postRepository.findAllPostsWithPage(offset, pageSize);
     } catch (error) {
       throw error;
     }

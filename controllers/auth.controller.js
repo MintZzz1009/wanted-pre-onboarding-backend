@@ -32,7 +32,7 @@ class AuthController {
       const id = res.locals.user;
       res.clearCookie('accessToken');
       await this.authService.clearRefreshToken(id);
-      return res.status(200).json({ message: '로그아웃이 완료되었습니다.' });
+      return res.status(204).json();
     } catch (error) {
       throw error;
     }

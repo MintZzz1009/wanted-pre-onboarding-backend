@@ -84,7 +84,7 @@ class Validator {
         });
       }
       if (postInfo.writer !== updater) {
-        return res.status(400).json({
+        return res.status(403).json({
           message: '게시글은 작성자만 수정하거나 삭제할 수 있습니다.',
         });
       }
@@ -106,3 +106,7 @@ module.exports = Validator;
 //       가산점 선택
 //       jest로 테스트코드
 //       aws, docker container 설계해보기
+
+// HTTP 상태코드 수정 필요
+// README 작성 필요
+// 상수들 env 파일에 정리
