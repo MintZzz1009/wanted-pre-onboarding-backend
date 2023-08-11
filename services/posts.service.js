@@ -4,14 +4,19 @@ const { Post } = require('../models');
 class PostService {
   postRepository = new PostRepository(Post);
 
-  getAllPostsWithPage = async (pageNo = 1, pageSize = 10) => {
+  getAllPostsWithPage = async (pageNo = 1) => {
     try {
       if (pageNo === 'all') {
         return await this.postRepository.findAllPosts();
       }
-      const offset = (parseInt(pageNo) - 1) * parseInt(pageSize);
-      const limit = parseInt(pageSize);
-      return await this.postRepository.findAllPostsWithPage(offset, limit);
+      const PAGE_SIZE = 10;
+      const countAllPosts = await this.postRepository.countAllPosts();
+      const lastPageNo = Math.ceil(countAllPosts / PAGE_SIZE);
+      if (pageNo > lastPageNo) {
+        pageNo = lastPageNo;
+      }
+      const offset = (parseInt(pageNo) - 1) * PAGE_SIZE;
+      return await this.postRepository.findAllPostsWithPage(offset, PAGE_SIZE);
     } catch (error) {
       throw error;
     }

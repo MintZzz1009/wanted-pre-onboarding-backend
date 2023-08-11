@@ -14,12 +14,12 @@ router.post(
   validator.isNew,
   authController.signUp
 );
-router.post(
+router.patch(
   '/signin',
   validator.isValid,
   validator.compareUserInfo,
   authController.signIn
 );
-router.post('/signout', token.whoIsUser, authController.signOut);
+router.delete('/signout', token.whoIsUser, authController.signOut);
 
 module.exports = router;

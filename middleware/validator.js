@@ -45,10 +45,14 @@ class Validator {
       const validPassword = await bcrypt.compare(password, user.password);
 
       if (!validPassword) {
-        return res.status(400).send('이메일이나 비밀번호가 올바르지 않습니다.');
+        return res
+          .status(400)
+          .json({ message: '이메일이나 비밀번호가 올바르지 않습니다.' });
       }
     } catch (error) {
-      return res.status(400).send('이메일이나 비밀번호가 올바르지 않습니다.');
+      return res
+        .status(400)
+        .json({ message: '이메일이나 비밀번호가 올바르지 않습니다.' });
     }
     next();
   };

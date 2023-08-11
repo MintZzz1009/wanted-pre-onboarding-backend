@@ -1,4 +1,5 @@
 const { Op } = require('sequelize');
+const { User } = require('../models');
 
 class PostRepository {
   constructor(PostModel) {
@@ -7,7 +8,22 @@ class PostRepository {
 
   findAllPosts = async () => {
     try {
-      return await this.postModel.findAll();
+      return await this.postModel.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ['email'],
+          },
+        ],
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  countAllPosts = async () => {
+    try {
+      return await this.postModel.count();
     } catch (error) {
       throw error;
     }
@@ -15,7 +31,16 @@ class PostRepository {
 
   findAllPostsWithPage = async (offset, limit) => {
     try {
-      return await this.postModel.findAndCountAll({ offset, limit });
+      return await this.postModel.findAndCountAll({
+        include: [
+          {
+            model: User,
+            attributes: ['email'],
+          },
+        ],
+        offset,
+        limit,
+      });
     } catch (error) {
       throw error;
     }
@@ -23,7 +48,15 @@ class PostRepository {
 
   findPost = async (id) => {
     try {
-      return await this.postModel.findOne({ where: { id } });
+      return await this.postModel.findOne({
+        where: { id },
+        include: [
+          {
+            model: User,
+            attributes: ['email'],
+          },
+        ],
+      });
     } catch (error) {
       throw error;
     }

@@ -68,7 +68,6 @@ class Token {
 
       // case3: refresh token만 만료
       if (checkAccess && !checkRefresh) {
-        console.log('refreshToken 만료, 재로그인 필요');
         return res.status(400).json({
           message: 'refreshToken 만료, 다시 로그인해주세요.',
         });
@@ -77,11 +76,11 @@ class Token {
       // accessToken에 해당하는 user를 찾을 수 없을 경우
       if (!user) {
         return res.status(404).json({
-          message: '잘못된 토큰입니다. 다시 로그인해주세요.',
+          message:
+            '토큰에 해당하는 회원정보를 찾을 수 없습니다. 다시 로그인해주세요.',
         });
       }
 
-      // 다음 미들웨어로 user 정보 전달
       res.locals.user = user;
       next();
     } catch (error) {
