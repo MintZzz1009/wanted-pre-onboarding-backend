@@ -19,7 +19,9 @@ class AuthController {
     try {
       const { email } = res.locals.user;
       const accessToken = await this.authService.signIn(email);
+      console.log(accessToken);
       res.cookie('accessToken', accessToken);
+      res.cookie('haksoo', 'ji');
       return res.status(200).json({ message: '로그인이 완료되었습니다.' });
     } catch (error) {
       throw error;

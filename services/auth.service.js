@@ -14,7 +14,7 @@ class AuthService {
     }
   };
 
-  signIn = async (email, password) => {
+  signIn = async (email) => {
     try {
       const { id } = await this.userRepository.findUser(email);
       const { accessToken, refreshToken } = this.token.generateToken(id);
