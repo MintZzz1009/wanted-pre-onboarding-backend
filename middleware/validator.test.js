@@ -17,7 +17,7 @@ describe('isValid', () => {
       },
     };
     await validator.isValid(req, res, next);
-    expect(next).toBeCalled(); // next가 호출되었는지 - toBeCalledTimes(1) 한 번만 호출되었는지
+    expect(next).toBeCalledTimes(1); // next가 호출되었는지 - toBeCalledTimes(1) 한 번만 호출되었는지
   });
 
   test('email에 @가 없으면 isValid가 res.status(400).json({msg:이메일 형식 오류})를 호출함', () => {
@@ -103,8 +103,10 @@ describe('compareUserInfo', () => {
     const req = {
       body: { email: '@', password: '12345678' },
     };
-    validator.userRepository.findUser = jest.fn(() => user); // test 위에서 실행하면 안된다... 왜??
+    // validator.userRepository.findUser = jest.fn(() => user); // test 위에서 실행하면 안된다... 왜??
     await validator.compareUserInfo(req, res, next);
+    // expect(res.status).toBeCalledWith(403);
+    // expect(res.json).toBeCalledWith({ m: 1 });
     expect(next).toBeCalledTimes(1);
   });
 });
@@ -139,6 +141,17 @@ describe('hasTitleAndContent', () => {
     expect(res.status).toBeCalledWith(400);
     expect(res.json).toBeCalledWith({ message: '내용을 입력해주세요.' });
   });
+
+  test('제목, 내용 둘 다 있으면 => next() 호출', () => {
+    const req = {
+      body: {
+        title: 'title',
+        content: 'content',
+      },
+    };
+    validator.hasTitleAndContent(req, res, next);
+    expect(next).toBeCalledTimes(1);
+  });
 });
 
 describe('isWriter', () => {
@@ -162,8 +175,7 @@ describe('isWriter', () => {
   });
 
   test('존재하지 않는 게시글일 때', async () => {
-    const postInfo = null;
-    validator.postRepository.findPost = jest.fn(() => postInfo);
+    validator.postRepository.findPost = jest.fn(() => null);
     await validator.isWriter(req, res, next);
     expect(res.status).toBeCalledWith(404);
     expect(res.json).toBeCalledWith({

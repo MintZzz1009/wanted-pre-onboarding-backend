@@ -8,9 +8,11 @@ class Token {
       return jwt.verify(token, process.env.TOKEN_SECRET);
     } catch (error) {
       // 토큰이 만료가 된 경우
-      if (error.message === 'jwt expired') {
-        return false;
-      }
+      // if (error.message === 'jwt expired') {
+      //   return false;
+      // }
+      console.error(error);
+      return false;
     }
   };
 
@@ -45,6 +47,14 @@ class Token {
       const checkAccess = this.verifyToken(accessToken);
       const { id } = jwt.decode(accessToken);
       const user = await User.findByPk(id);
+
+      // accessToken에 해당하는 user를 찾을 수 없을 경우
+      if (!user) {
+        return res.status(404).json({
+          message:
+            '토큰에 해당하는 회원정보를 찾을 수 없습니다. 다시 로그인해주세요.',
+        });
+      }
       const checkRefresh = this.verifyToken(user.refreshToken);
 
       // case1: access token과 refresh token 모두만료
@@ -72,16 +82,9 @@ class Token {
         });
       }
 
-      // accessToken에 해당하는 user를 찾을 수 없을 경우
-      if (!user) {
-        return res.status(404).json({
-          message:
-            '토큰에 해당하는 회원정보를 찾을 수 없습니다. 다시 로그인해주세요.',
-        });
-      }
-
       res.locals.user = user;
       next();
+      return;
     } catch (error) {
       console.error(error);
       res.clearCookie('accessToken');
