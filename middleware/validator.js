@@ -87,7 +87,6 @@ class Validator {
       const { id: updater } = res.locals.user;
       const { id: postId } = req.params;
       const postInfo = await this.postRepository.findPost(postId);
-      await User.find();
       if (!postInfo) {
         return res.status(404).json({
           message: '존재하지 않는 게시글입니다.',

@@ -17,8 +17,8 @@ const development = {
 };
 const test = {
   username: 'root',
-  password: null,
-  database: 'database_test',
+  password: env.DB_PASSWORD,
+  database: 'wanted_test',
   host: '127.0.0.1',
   dialect: 'mysql',
 };
@@ -31,3 +31,6 @@ const production = {
 };
 
 module.exports = { development, test, production };
+
+// npm sequelize db table cloumm --
+// npx sequelize db:create --env test

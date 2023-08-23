@@ -19,6 +19,4 @@ const port = process.env.PORT || 3000;
 app.use('/auth', authRouter);
 app.use('/posts', postsRouter);
 
-app.listen(port, () => {
-  console.log(`✅ 서버가 http://localhost:${port}/ 에서 활성화되었습니다.`);
-});
+module.exports = app;
