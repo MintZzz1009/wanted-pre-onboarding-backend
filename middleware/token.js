@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
+const redisClient = require('../redis');
 
 // 토큰 검증 함수
 class Token {
@@ -11,7 +12,7 @@ class Token {
       // if (error.message === 'jwt expired') {
       //   return false;
       // }
-      console.error(error);
+      // console.error(error);
       return false;
     }
   };
@@ -55,7 +56,9 @@ class Token {
             '토큰에 해당하는 회원정보를 찾을 수 없습니다. 다시 로그인해주세요.',
         });
       }
-      const checkRefresh = this.verifyToken(user.refreshToken);
+
+      const refreshToken = await redisClient.get(String(id));
+      const checkRefresh = this.verifyToken(refreshToken);
 
       // case1: access token과 refresh token 모두만료
       if (!checkAccess && !checkRefresh) {
