@@ -1,4 +1,5 @@
 const AuthService = require('../services/auth.service');
+const redisClient = require('../redis');
 
 class AuthController {
   authService = new AuthService();

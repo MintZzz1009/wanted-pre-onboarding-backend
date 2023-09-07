@@ -1,6 +1,7 @@
 const UserRepository = require('../repositories/users.repository');
 const Token = require('../middleware/token.js');
 const { User } = require('../models');
+const redisClient = require('../redis');
 
 class AuthService {
   userRepository = new UserRepository(User);
@@ -18,7 +19,9 @@ class AuthService {
     try {
       const { id } = await this.userRepository.findUser(email);
       const { accessToken, refreshToken } = this.token.generateToken(id);
-      await this.userRepository.saveRefreshToken(id, refreshToken);
+
+      await redisClient.set('id', refreshToken);
+      // await this.userRepository.saveRefreshToken(id, refreshToken);
       return accessToken;
     } catch (error) {
       throw error;

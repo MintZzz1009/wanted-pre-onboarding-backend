@@ -2,6 +2,10 @@ const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
+// deploy
+const helmet = require('helmet');
+const hpp = require('hpp');
+
 require('dotenv').config();
 
 const authRouter = require('./routes/auth.routes');
@@ -9,12 +13,25 @@ const postsRouter = require('./routes/posts.routes');
 
 const app = express();
 
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'production') {
+  // 배포용
+  app.use(hpp());
+  app.use(morgan('combined'));
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false,
+      crissOriginResourcePolicy: false,
+    })
+  );
+} else {
+  // 개발용
+  app.use(morgan('dev'));
+}
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-const port = process.env.PORT || 3000;
 
 app.use('/auth', authRouter);
 app.use('/posts', postsRouter);
