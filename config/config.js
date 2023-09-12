@@ -2,9 +2,9 @@ require('dotenv').config();
 const env = process.env;
 
 const development = {
-  username: env.DB_USERNAME,
-  password: env.DB_PASSWORD,
-  database: env.DB_DATABASE,
+  username: env.LOCAL_DB_USERNAME,
+  password: env.LOCAL_DB_PASSWORD,
+  database: env.LOCAL_DB_DATABASE,
   host: env.DB_HOST,
   dialect: 'mysql',
   logging: false,
@@ -23,10 +23,10 @@ const test = {
   dialect: 'mysql',
 };
 const production = {
-  username: 'root',
-  password: null,
-  database: 'database_production',
-  host: '127.0.0.1',
+  username: env.AWS_DB_USERNAME,
+  password: env.AWS_DB_PASSWORD,
+  database: env.AWS_DB_DATABASE,
+  host: env.AWS_DB_HOST,
   dialect: 'mysql',
 };
 
