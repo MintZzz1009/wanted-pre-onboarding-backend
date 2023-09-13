@@ -20,7 +20,7 @@ class AuthService {
       const { id } = await this.userRepository.findUser(email);
       const { accessToken, refreshToken } = this.token.generateToken(id);
 
-      await redisClient.set(id, refreshToken);
+      await redisClient.set(String(id), refreshToken);
       // await this.userRepository.saveRefreshToken(id, refreshToken);
       return accessToken;
     } catch (error) {
