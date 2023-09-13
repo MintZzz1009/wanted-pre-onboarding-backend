@@ -147,5 +147,6 @@ dist
 #SSL
 fullchain.pem
 privkey.pem
+wanted-pre-onboarding.pem
 
 # End of https://www.toptal.com/developers/gitignore/api/node

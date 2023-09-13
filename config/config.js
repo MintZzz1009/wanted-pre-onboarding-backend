@@ -5,7 +5,11 @@ const development = {
   username: env.LOCAL_DB_USERNAME,
   password: env.LOCAL_DB_PASSWORD,
   database: env.LOCAL_DB_DATABASE,
-  host: env.DB_HOST,
+  host: env.LOCAL_DB_HOST,
+  // username: env.AWS_DB_USERNAME,
+  // password: env.AWS_DB_PASSWORD,
+  // database: env.AWS_DB_DATABASE,
+  // host: env.AWS_DB_HOST,
   dialect: 'mysql',
   logging: false,
   timezone: '+09:00',
@@ -17,7 +21,7 @@ const development = {
 };
 const test = {
   username: 'root',
-  password: env.DB_PASSWORD,
+  password: env.LOCAL_DB_PASSWORD,
   database: 'wanted_test',
   host: '127.0.0.1',
   dialect: 'mysql',
