@@ -8,6 +8,7 @@ class AuthController {
   signUp = async (req, res) => {
     try {
       const { email, hashedPassword } = res.locals.user;
+      console.log('signUp controller', email, hashedPassword);
       await this.authService.signUp(email, hashedPassword);
       return res.status(201).json({ message: '회원가입이 완료되었습니다.' });
     } catch (error) {
