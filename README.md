@@ -211,3 +211,5 @@
   > _현재 인스턴스가 실행중입니다._
 
 - **배포 환경 그림**
+
+  ![aws drawio](https://github.com/MintZzz1009/wanted-pre-onboarding-backend/assets/107108021/f3eba28a-9707-4376-9626-37bf4ad5005f)
