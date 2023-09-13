@@ -21,6 +21,7 @@ class AuthService {
       const { accessToken, refreshToken } = this.token.generateToken(id);
 
       await redisClient.set(String(id), refreshToken);
+      // refreshToken을 redis가 아닌 DB에 저장할시
       // await this.userRepository.saveRefreshToken(id, refreshToken);
       return accessToken;
     } catch (error) {
