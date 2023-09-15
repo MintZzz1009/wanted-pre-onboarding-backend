@@ -6,10 +6,6 @@ const development = {
   password: env.LOCAL_DB_PASSWORD,
   database: env.LOCAL_DB_DATABASE,
   host: env.LOCAL_DB_HOST,
-  // username: env.AWS_DB_USERNAME,
-  // password: env.AWS_DB_PASSWORD,
-  // database: env.AWS_DB_DATABASE,
-  // host: env.AWS_DB_HOST,
   dialect: 'mysql',
   logging: false,
   timezone: '+09:00',
@@ -35,6 +31,3 @@ const production = {
 };
 
 module.exports = { development, test, production };
-
-// npm sequelize db table cloumm --
-// npx sequelize db:create --env test
