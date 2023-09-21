@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const { sequelize } = require('./models');
 
 // deploy
 const helmet = require('helmet');
@@ -12,6 +13,15 @@ const authRouter = require('./routes/auth.routes');
 const postsRouter = require('./routes/posts.routes');
 
 const app = express();
+
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log('데이터베이스 연결 성공');
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 if (process.env.NODE_ENV === 'production') {
   // 배포용

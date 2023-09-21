@@ -28,6 +28,11 @@ const production = {
   database: env.AWS_DB_DATABASE,
   host: env.AWS_DB_HOST,
   dialect: 'mysql',
+  dialectOptions: {
+    charset: 'utf8mb4',
+    dateStrings: true,
+    typeCast: true,
+  },
 };
 
 module.exports = { development, test, production };
