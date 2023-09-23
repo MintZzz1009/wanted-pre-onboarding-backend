@@ -8,11 +8,6 @@ class Token {
     try {
       return jwt.verify(token, process.env.TOKEN_SECRET);
     } catch (error) {
-      // 토큰이 만료가 된 경우
-      // if (error.message === 'jwt expired') {
-      //   return false;
-      // }
-      // console.error(error);
       return false;
     }
   };

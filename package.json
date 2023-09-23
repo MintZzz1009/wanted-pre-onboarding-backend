@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --runInBand --detectOpenHandles",
     "coverage": "jest --coverage",
-    "start": "cross-env NODE_ENV=production PORT=8080 pm2 start server.js -i 0",
+    "start": "cross-env NODE_ENV=production node server",
+    "pm2": "cross-env NODE_ENV=production PORT=8080 pm2 start server.js",
     "dev": "nodemon server"
   },
   "author": "",
