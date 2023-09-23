@@ -45,5 +45,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/auth', authRouter);
 app.use('/posts', postsRouter);
+app.get('/', (req, res, next) => {
+  res.send('Hello Wanted-pre-onboarding-internship');
+});
 
 module.exports = app;

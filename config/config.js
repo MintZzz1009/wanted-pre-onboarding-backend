@@ -28,6 +28,7 @@ const production = {
   database: env.AWS_DB_DATABASE,
   host: env.AWS_DB_HOST,
   dialect: 'mysql',
+  timezone: '+09:00',
   dialectOptions: {
     charset: 'utf8mb4',
     dateStrings: true,

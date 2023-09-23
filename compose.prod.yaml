@@ -1,0 +1,7 @@
+version: '3'
+services:
+  app:
+    image: haksoo/wanted-server:0.1.4
+    container_name: app
+    ports:
+      - 80:80
