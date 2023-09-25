@@ -29,38 +29,20 @@
   git clone https://github.com/MintZzz1009/wanted-pre-onboarding-backend.git
   ```
 
-- **2-2. 로컬에 클론한 저장소로 이동한 후 .env 파일을 생성합니다.**
+- **2-2. 로컬에 클론한 저장소로 이동한 후 `.env` 파일을 생성합니다.**
 
   ```bash
   cd wanted-pre-onboarding-backend/
   echo > .env
   ```
 
-- **2-2. .env 파일에 필요한 환경 변수들을 입력합니다.**
+- **2-2. `.env` 파일에 필요한 환경 변수들을 입력합니다.**
 
   `.env.example` 파일을 참고해서 작성할 수 있습니다.
 
-  ```.env
-  PORT = 80
+  - 접속할 로컬의 MySQL 서버의 아이디와 비밀번호, 생성할 데이터베이스의 이름을 입력합니다.
 
-  # MySQL
-  DB_USERNAME='your_username'
-  DB_PASSWORD='your_password'
-  DB_DATABASE='your_database'
-  DB_HOST='127.0.0.1'
-
-  # JWT
-  TOKEN_SECRET='jwt_secert_key'
-  ACCESS_TOKEN_EXPIRED = '1d'
-  REFRESH_TOKEN_EXPIRED = '14d'
-
-  # 페이지네이션
-  PAGE_SIZE = '10'
-  ```
-
-  접속할 로컬의 MySQL 서버의 아이디와 비밀번호, 생성할 데이터베이스의 이름을 입력합니다.
-
-  토큰의 유효기간과 페이지네이션 게시글의 수를 변경할 수 있습니다.
+  - 토큰의 유효기간과 페이지네이션 게시글의 수를 변경할 수 있습니다.
 
 - **2-3. 작성 완료된 환경변수 파일을 포함한 소스코드를 도커 이미지로 빌드합니다.**
 
