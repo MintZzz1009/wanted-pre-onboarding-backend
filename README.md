@@ -203,6 +203,12 @@
 
   ![사전과제 ec2 rds docker 배포 환경](https://github.com/MintZzz1009/wanted-pre-onboarding-backend/assets/107108021/83b7856d-55eb-4b7b-a237-67644cc43815)
 
+  - 관련 블로그 글
+    https://mintzzz.tistory.com/19?category=1395512
+
 - **개발 환경 그림**
 
-  ![사전과제 멀티컨테이너](https://github.com/MintZzz1009/wanted-pre-onboarding-backend/assets/107108021/114aa267-c105-4ff3-a1d4-23d9c7989ee7)
+  ![사전과제 멀티컨테이너](https://github.com/MintZzz1009/wanted-pre-onboarding-backend/assets/107108021/9158e795-acfa-4d8f-816c-be68b04c5c7a)
+
+  - 관련 블로그 글
+    https://mintzzz.tistory.com/20
