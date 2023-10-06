@@ -11,6 +11,7 @@ require('dotenv').config();
 
 const authRouter = require('./routes/auth.routes');
 const postsRouter = require('./routes/posts.routes');
+const ErrorHandler = require('./middleware/errorhandler');
 
 const app = express();
 
@@ -48,5 +49,6 @@ app.use('/posts', postsRouter);
 app.get('/', (req, res, next) => {
   res.send('Hello Wanted-pre-onboarding-internship');
 });
+app.use(ErrorHandler.handle);
 
 module.exports = app;

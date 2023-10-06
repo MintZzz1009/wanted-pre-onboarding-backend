@@ -6,85 +6,48 @@ class PostRepository {
     this.postModel = PostModel;
   }
 
-  findAllPosts = async () => {
-    try {
-      return await this.postModel.findAll({
-        include: [
-          {
-            model: User,
-            attributes: ['email'],
-          },
-        ],
-      });
-    } catch (error) {
-      throw error;
-    }
-  };
+  findAllPosts = async () =>
+    await this.postModel.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['email'],
+        },
+      ],
+    });
 
-  countAllPosts = async () => {
-    try {
-      return await this.postModel.count();
-    } catch (error) {
-      throw error;
-    }
-  };
+  countAllPosts = async () => await this.postModel.count();
 
-  findAllPostsWithPage = async (offset, limit) => {
-    try {
-      return await this.postModel.findAndCountAll({
-        include: [
-          {
-            model: User,
-            attributes: ['email'],
-          },
-        ],
-        offset,
-        limit,
-      });
-    } catch (error) {
-      throw error;
-    }
-  };
+  findAllPostsWithPage = async (offset, limit) =>
+    await this.postModel.findAndCountAll({
+      include: [
+        {
+          model: User,
+          attributes: ['email'],
+        },
+      ],
+      offset,
+      limit,
+    });
 
-  findPost = async (id) => {
-    try {
-      return await this.postModel.findOne({
-        where: { id },
-        include: [
-          {
-            model: User,
-            attributes: ['email'],
-          },
-        ],
-      });
-    } catch (error) {
-      throw error;
-    }
-  };
+  findPost = async (id) =>
+    await this.postModel.findOne({
+      where: { id },
+      include: [
+        {
+          model: User,
+          attributes: ['email'],
+        },
+      ],
+    });
 
-  createNewPost = async (title, content, writer) => {
-    try {
-      return await this.postModel.create({ title, content, writer });
-    } catch (error) {
-      throw error;
-    }
-  };
+  createNewPost = async (title, content, writer) =>
+    await this.postModel.create({ title, content, writer });
 
-  updatePost = async (id, title, content) => {
-    try {
-      return await this.postModel.update({ title, content }, { where: { id } });
-    } catch (error) {
-      throw error;
-    }
-  };
+  updatePost = async (id, title, content) =>
+    await this.postModel.update({ title, content }, { where: { id } });
 
-  destroyPost = async (id) => {
-    try {
-      return await this.postModel.destroy({ where: { id } });
-    } catch (error) {
-      throw error;
-    }
-  };
+  destroyPost = async (id) => await this.postModel.destroy({ where: { id } });
 }
 
 module.exports = PostRepository;
