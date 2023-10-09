@@ -1,8 +1,8 @@
 const {
-  StatusCodes: { NOT_FOUND },
+  StatusCodes: { NOT_FOUND, BAD_REQUEST },
 } = require('http-status-codes');
 
-export class ApiError extends Error {
+class ApiError extends Error {
   constructor(statusCode, message) {
     super(message);
     this.statusCode = statusCode;
@@ -10,26 +10,34 @@ export class ApiError extends Error {
   }
 }
 
-export class NotFoundError extends ApiError {
+class NotFoundError extends ApiError {
   constructor(path) {
     super(NOT_FOUND, `요청하신 URL: ${path}이 존재하지 않습니다.`);
   }
 }
 
-export class ValidationError extends ApiError {
+class ValidationError extends ApiError {
   constructor(message) {
     super(BAD_REQUEST, message);
   }
 }
 
-export class TokenServiceError extends ApiError {
+class TokenServiceError extends ApiError {
   constructor(statusCode, message) {
     super(statusCode, message);
   }
 }
 
-export class ApplicationError extends ApiError {
+class ApplicationError extends ApiError {
   constructor(statusCode, message) {
     super(statusCode, message);
   }
 }
+
+module.exports = {
+  ApiError,
+  NotFoundError,
+  ValidationError,
+  TokenServiceError,
+  ApplicationError,
+};

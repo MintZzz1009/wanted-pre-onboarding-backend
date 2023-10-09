@@ -1,4 +1,8 @@
+const linkToDatabase = require('./db');
 const app = require('./app');
+const ErrorHandler = require('./middleware/errorhandler');
+
+ErrorHandler.initializeUnhandledException();
 
 const port = process.env.PORT || 3000;
 

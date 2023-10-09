@@ -6,7 +6,8 @@ const { ApiError, NotFoundError } = require('../utils/apiError');
 class ErrorHandler {
   static handle = async (err, req, res, next) => {
     const statusCode = err.statusCode || INTERNAL_SERVER_ERROR;
-    res.status(statusCode).send({
+    res.status(statusCode).json({
+      name: err.name,
       success: false,
       message: err.message,
       stack: err.stack,

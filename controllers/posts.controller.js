@@ -1,5 +1,5 @@
 const PostService = require('../services/posts.service');
-const asyncErrorCatcher = require('../utils/asyncErrorCatcher');
+const { asyncErrorCatcher } = require('../utils/asyncErrorCatcher');
 const {
   StatusCodes: { OK, CREATED, NO_CONTENT, NOT_FOUND },
 } = require('http-status-codes');

@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const UserRepository = require('../repositories/users.repository');
 const PostRepository = require('../repositories/posts.repository');
 const { User, Post } = require('../models');
-const asyncErrorCatcher = require('../utils/asyncErrorCatcher');
+const { asyncErrorCatcher } = require('../utils/asyncErrorCatcher');
 const { ValidationError, ApplicationError } = require('../utils/apiError');
 const {
   StatusCodes: { NOT_FOUND, FORBIDDEN },

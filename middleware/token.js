@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 const redisClient = require('../utils/redis');
-const asyncErrorCatcher = require('../utils/asyncErrorCatcher');
+const { asyncErrorCatcher } = require('../utils/asyncErrorCatcher');
 const { TokenServiceError } = require('../utils/apiError');
 const {
   StatusCodes: { UNAUTHORIZED },
@@ -94,25 +94,17 @@ class Token {
 
   // 로그아웃을 위한 단순 user정보 파악
   whoIsUser = asyncErrorCatcher(async (req, res, next) => {
-    try {
-      const cookie = req.cookies;
-      const { accessToken } = cookie;
-      if (!accessToken) {
-        throw new TokenServiceError(
-          UNAUTHORIZED,
-          '토큰이 존재하지 않습니다. 다시 로그인해주세요.'
-        );
-      }
-      const { id } = jwt.decode(accessToken);
-      res.locals.user = id;
-      next();
-    } catch (error) {
-      console.error(error);
-      res.clearCookie('accessToken');
-      return res.status(401).json({
-        message: '토큰에 문제가 생겨 로그아웃되었습니다',
-      });
+    const cookie = req.cookies;
+    const { accessToken } = cookie;
+    if (!accessToken) {
+      throw new TokenServiceError(
+        UNAUTHORIZED,
+        '토큰이 존재하지 않습니다. 다시 로그인해주세요.'
+      );
     }
+    const { id } = jwt.decode(accessToken);
+    res.locals.user = id;
+    next();
   });
 }
 

@@ -1,6 +1,6 @@
 const AuthService = require('../services/auth.service');
-const asyncErrorCatcher = require('../utils/asyncErrorCatcher');
 const redisClient = require('../utils/redis');
+const { asyncErrorCatcher } = require('../utils/asyncErrorCatcher');
 const {
   StatusCodes: { OK, CREATED, NO_CONTENT, NOT_FOUND },
 } = require('http-status-codes');
