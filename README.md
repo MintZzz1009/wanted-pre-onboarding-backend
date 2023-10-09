@@ -16,7 +16,9 @@
 
 # 2. 애플리케이션의 실행 방법 (엔드포인트 호출 방법 포함)
 
-로컬에서의 실행방법을 설명드립니다.
+현재 배포는 AWS의 EC2에 Docker를 통한 컨테이너와 RDS의 MySQL서버가 연동된 상태로 배포되어있습니다.
+
+다음은 로컬 환경에서의 실행방법을 설명드립니다.
 
 - **2-1. github 저장소를 로컬에 클론합니다.**
 
@@ -27,54 +29,41 @@
   git clone https://github.com/MintZzz1009/wanted-pre-onboarding-backend.git
   ```
 
-- **2-2. 로컬에 클론한 저장소로 이동한 후 .env 파일을 생성합니다.**
+- **2-2. 로컬에 클론한 저장소로 이동한 후 `.env` 파일을 생성합니다.**
 
   ```bash
   cd wanted-pre-onboarding-backend/
   echo > .env
   ```
 
-- **2-2. .env 파일에 필요한 환경 변수들을 입력합니다.**
+- **2-2. `.env` 파일에 필요한 환경 변수들을 입력합니다.**
 
-  ```.env
-  PORT = 80
+  `.env.example` 파일을 참고해서 작성할 수 있습니다.
 
-  # MySQL
-  DB_USERNAME='your_username'
-  DB_PASSWORD='your_password'
-  DB_DATABASE='your_database'
-  DB_HOST='127.0.0.1'
+  - 접속할 로컬의 MySQL 서버의 아이디와 비밀번호, 생성할 데이터베이스의 이름을 입력합니다.
 
-  # JWT
-  TOKEN_SECRET='jwt_secert_key'
-  ACCESS_TOKEN_EXPIRED = '1d'
-  REFRESH_TOKEN_EXPIRED = '14d'
+  - 토큰의 유효기간과 페이지네이션 게시글의 수를 변경할 수 있습니다.
 
-  # 페이지네이션
-  PAGE_SIZE = '10'
-  ```
-
-  접속할 로컬의 MySQL 서버의 아이디와 비밀번호, 생성할 데이터베이스의 이름을 입력합니다.
-
-  토큰의 유효기간과 페이지네이션 게시글의 수를 변경할 수 있습니다.
-
-- **2-3. 다음 명령어를 입력하여 package.json에 입력된 모듈들을 다운로드 합니다.**
+- **2-3. 작성 완료된 환경변수 파일을 포함한 소스코드를 도커 이미지로 빌드합니다.**
 
   ```bash
-  npm i
+  docker build -t <your tag name> . -f Dockerfile.dev
   ```
 
-- **2-4. 다음 명령어를 입력하여 MySQL 데이터베이스 생성과 테이블 생성을 합니다.**
+- **2-4. 빌드된 이미지를 통해 도커 컨테이너를 실행합니다.**
 
   ```bash
+  docker compose -f compose.dev.yaml up -d
+  ```
+
+- **2-5. 다음 명령어를 입력하여 도커의 app 컨테이너에 접속하여 MySQL 데이터베이스 생성과 테이블 생성을 합니다.**
+
+  ```bash
+  docker exec -it app bash
+
+  # 접속 후
   npx sequelize db:create
   npx sequelize db:migrate
-  ```
-
-- **2-5. 다음 명령어를 입력하여 서버를 실행합니다.**
-
-  ```bash
-  npm run dev
   ```
 
 - **2-6. 엔드포인트 호출을 위해 VScode의 익스텐션인 `Thunder Client`를 설치합니다.**
@@ -206,10 +195,20 @@
 
 - **배포된 API 주소**
 
-  ec2-13-209-99-120.ap-northeast-2.compute.amazonaws.com:8080
+  ec2-13-209-99-120.ap-northeast-2.compute.amazonaws.com:80
 
   > _현재 인스턴스가 실행중입니다._
 
 - **배포 환경 그림**
 
-  ![aws drawio](https://github.com/MintZzz1009/wanted-pre-onboarding-backend/assets/107108021/f3eba28a-9707-4376-9626-37bf4ad5005f)
+  ![사전과제 ec2 rds docker 배포 환경](https://github.com/MintZzz1009/wanted-pre-onboarding-backend/assets/107108021/83b7856d-55eb-4b7b-a237-67644cc43815)
+
+  - 관련 블로그 글
+    https://mintzzz.tistory.com/19?category=1395512
+
+- **개발 환경 그림**
+
+  ![사전과제 멀티컨테이너](https://github.com/MintZzz1009/wanted-pre-onboarding-backend/assets/107108021/9158e795-acfa-4d8f-816c-be68b04c5c7a)
+
+  - 관련 블로그 글
+    https://mintzzz.tistory.com/20

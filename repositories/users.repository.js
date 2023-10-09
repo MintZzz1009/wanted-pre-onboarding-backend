@@ -5,54 +5,35 @@ class UserRepository {
     this.userModel = UserModel;
   }
 
-  findUser = async (email, password) => {
-    try {
-      return await this.userModel.findOne({
-        where: { email },
-      });
-    } catch (error) {
-      throw error;
-    }
-  };
+  findUser = async (email, password) =>
+    await this.userModel.findOne({
+      where: { email },
+    });
 
-  createNewUser = async (email, password) => {
-    try {
-      return await this.userModel.create({
-        email,
-        password,
-      });
-    } catch (error) {
-      throw error;
-    }
-  };
+  createNewUser = async (email, password) =>
+    await this.userModel.create({
+      email,
+      password,
+    });
 
-  saveRefreshToken = async (id, refreshToken) => {
-    try {
-      return await this.userModel.update(
-        {
-          refreshToken,
-        },
-        { where: { id } }
-      );
-    } catch (error) {
-      throw error;
-    }
-  };
+  saveRefreshToken = async (id, refreshToken) =>
+    await this.userModel.update(
+      {
+        refreshToken,
+      },
+      { where: { id } }
+    );
 
-  clearRefreshToken = async (id) => {
-    try {
-      return await this.userModel.update(
-        {
-          refreshToken: '',
-        },
-        {
-          where: { id },
-        }
-      );
-    } catch (error) {
-      throw error;
-    }
-  };
+  // refreshToken을 redis가 아닌 DB에 저장할시
+  clearRefreshToken = async (id) =>
+    await this.userModel.update(
+      {
+        refreshToken: '',
+      },
+      {
+        where: { id },
+      }
+    );
 }
 
 module.exports = UserRepository;
